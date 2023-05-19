@@ -1,10 +1,11 @@
 const prompt = require('prompt-sync')();
-const { AppTokenAuthProvider } = require("@twurple/auth");
-const { ChatClient } = '@twurple/chat';
+const {RefreshingAuthProvider} = require("@twurple/auth");
+const {ChatClient} = require("@twurple/chat");
 
-const clientId = 'YOUR_CLIENT_ID';
+const clientId = 'i6vsfdlvsarzv6b12i74rdajzs1f2k';
 
 const clientSecret = prompt('Clave de Twitch');
-const authProvider = new AppTokenAuthProvider(clientId, clientSecret);
+const authProvider = new RefreshingAuthProvider(clientId, clientSecret,  ['chat:read']);
 
-const chatClient = new ChatClient({ authProvider, channels: ['Ailakks'] });
+const chatClient = new ChatClient({ authProvider, channels: ['Ailakks']});
+chatClient.connect();

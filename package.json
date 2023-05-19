@@ -4,7 +4,10 @@
     "@twurple/auth": "^6.2.0",
     "@twurple/auth-ext": "^6.2.0",
     "@twurple/chat": "^6.2.0",
+    "@twurple/easy-bot": "^6.2.0",
     "prompt-sync": "^4.2.0",
-    "robotjs": "^0.6.0"
+    "robotjs": "^0.6.0",
+    "twitch-auth": "^4.6.7",
+    "twitch-chat-client": "^4.6.7"
   }
 }
