@@ -1,8 +1,14 @@
+const prompt = require('prompt-sync')();
 const tmi = require('tmi.js');
 const robot = require("robotjs");
 
+const Language = {
+    CHANNEL_NAME_PROMPT: 'Introduce el nombre del canal'
+};
+
+const channelName = prompt(Language.CHANNEL_NAME_PROMPT);
 const client = new tmi.Client({
-    channels: [ 'Ailakks' ]
+    channels: [ channelName ]
 });
 
 client.connect();
