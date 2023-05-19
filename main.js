@@ -1,11 +1,28 @@
-const prompt = require('prompt-sync')();
-const {RefreshingAuthProvider} = require("@twurple/auth");
-const {ChatClient} = require("@twurple/chat");
+const tmi = require('tmi.js');
+const robot = require("robotjs");
 
-const clientId = 'i6vsfdlvsarzv6b12i74rdajzs1f2k';
+const client = new tmi.Client({
+    channels: [ 'Ailakks' ]
+});
 
-const clientSecret = prompt('Clave de Twitch');
-const authProvider = new RefreshingAuthProvider(clientId, clientSecret,  ['chat:read']);
+client.connect();
+client.on('message', (channel, tags, message, self) => {
+    console.log(`Key ${getByCommand(message).key} pressed`)
+    robot.keyTap(getByCommand(message).key);
+});
 
-const chatClient = new ChatClient({ authProvider, channels: ['Ailakks']});
-chatClient.connect();
+const Keys = {
+    UP: { command: "right", key: "right" },
+    LEFT: { command: "left", key: "left" },
+    RIGHT: { command: "right", key: "right" },
+    DOWN: { command: "down", key: "down" }
+};
+
+function getByCommand(command) {
+    for (const prop in Keys) {
+        if (Keys[prop].command === command) {
+            return Keys[prop];
+        }
+    }
+    return null;
+}
