@@ -11,7 +11,7 @@ const Language = {
 
 const channelName = prompt(Language.CHANNEL_NAME_PROMPT);
 const client = new tmi.Client({
-    channels: [ channelName ]
+    channels: [channelName]
 });
 
 const actionMap = new Map();
@@ -28,15 +28,23 @@ client?.on('message', (channel, tags, message) => {
     }, time);
 
     if (actionMap.get(key) > minAmount) {
+        if (key.time) {
+            robot.keyToggle(key.key);
+
+            setTimeout(() => {
+                robot.keyToggle(key.key);
+            }, key.time);
+            return;
+        }
         robot.keyTap(key.key);
     }
 });
 
 const Keys = {
-    UP: { command: "right", key: "right" },
-    LEFT: { command: "left", key: "left" },
-    RIGHT: { command: "right", key: "right" },
-    DOWN: { command: "down", key: "down" }
+    UP: {command: "right", key: "right"},
+    LEFT: {command: "left", key: "left"},
+    RIGHT: {command: "right", key: "right"},
+    DOWN: {command: "down", key: "down"}
 };
 
 function getByCommand(command) {
