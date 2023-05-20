@@ -83,7 +83,6 @@ client?.on('message', (channel, tags, message) => {
                 }
 
                 action.mouse.forEach(action => {
-                    console.log(action)
                     robot.mouseClick(action);
                 })
             }
