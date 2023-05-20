@@ -16,6 +16,8 @@ const client = new tmi.Client({
 
 const actionMap = new Map();
 
+robot.setKeyboardDelay(time);
+
 client.connect().then(() => console.log("Connected!"));
 client?.on('message', (channel, tags, message) => {
     const key = getByCommand(message);
