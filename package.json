@@ -6,5 +6,8 @@
   },
   "config": {
     "path": "./config.json"
+  },
+  "scripts": {
+    "build": "pkg twitch_key_control.js --out-path build"
   }
 }
