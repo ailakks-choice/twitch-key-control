@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,7 +44,7 @@ jobs:
 
       - name: Determine version
         id: determine_version
-        run: echo ::set-output name=GIT_VERSION::$(git describe --tags --always)
+        run: echo name=GIT_VERSION::$(git describe --tags --always)
 
       - name: Create Release
         id: create_release
