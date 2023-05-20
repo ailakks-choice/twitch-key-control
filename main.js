@@ -3,10 +3,10 @@ const tmi = require('tmi.js');
 const robot = require("robotjs");
 const config = require('./config.json');
 
-const minAmount = 10;
-const time = 5 * 1000;
+const minAmount = config.settings.minimum_amount;
+const delay = config.settings.delay;
 
-const channelName = prompt(config.language.CHANNEL_NAME_PROMPT);
+const channelName = config.settings.channel ?? prompt(config.language.CHANNEL_NAME_PROMPT);
 const client = new tmi.Client({
     channels: [channelName]
 });
@@ -22,30 +22,37 @@ const action = {
 
 const actionMap = new Map();
 
-robot.setKeyboardDelay(time);
+robot.setKeyboardDelay(delay);
 
-client.connect().then(() => console.log("Connected!"));
+client.connect().then(() => console.log(config.language.CHAT_STATUS_CONNECTED));
 client?.on('message', (channel, tags, message) => {
     const action = getByCommand(message);
 
+    if (!action) {
+        return;
+    }
+
     actionMap.set(action, (actionMap.get(action) ?? 0) + 1);
-    console.log(config.language.CHANNEL_NAME_PROMPT.replace("{key}", action.key).replace("{amount}", actionMap.get(action)));
 
     setTimeout(() => {
         actionMap.delete(action);
-    }, time);
+    }, delay);
 
     if (actionMap.get(action) > minAmount) {
+        const amount = actionMap.get(action);
+        console.log(amount > 1 ? config.language.ACTION_PERFORM_PLURAL : config.language.ACTION_PERFORM_SINGULAR
+            .replace("{command}", action.command).replace("{amount}", amount));
+
         repeatAction(() => {
             if (action.key) {
                 if (action.time) {
                     action.key.forEach(action => {
-                        robot.keyToggle(action);
+                        robot.keyToggle(action, "down");
                     })
 
                     setTimeout(() => {
                         action.key.forEach(action => {
-                            robot.keyToggle(action);
+                            robot.keyToggle(action, "up");
                         })
                     }, action.time);
 
@@ -76,7 +83,7 @@ client?.on('message', (channel, tags, message) => {
                     robot.mouseClick(action);
                 })
             }
-        }, action.delay, action.repeat ?? 1);
+        }, action.delay ?? 0, action.repeat ?? 1);
     }
 });
 
