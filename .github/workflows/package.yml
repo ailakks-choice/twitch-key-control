@@ -1,4 +1,4 @@
-name: Package executable
+name: Build executable
 
 on:
   push:
@@ -38,3 +38,20 @@ jobs:
         with:
           name: build
           path: build/
+
+      - name: Determine version
+        id: determine_version
+        run: echo "VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.determine_version.outputs.VERSION }}
+          release_name: Release ${{ steps.determine_version.outputs.VERSION }}
+          body: |
+            Release ${{ steps.determine_version.outputs.VERSION }}.
+          draft: false
+          prerelease: false
