@@ -19,13 +19,16 @@ jobs:
         with:
           node-version: '16.17.0'
 
-      - name: Install dependencies
+      - name: Linux dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libx11-dev libxtst-dev libpng++-dev
 
-      - name: Install dependencies
+      - name: Node dependencies
         run: npm install
+
+      - name: Install pkg
+        run: npm install -g pkg
 
       - name: Build
         run: pkg .\twitch_key_control.js --out-path build
