@@ -11,6 +11,15 @@ const client = new tmi.Client({
     channels: [channelName]
 });
 
+const action = {
+    key: [],
+    mouse: [],
+    time: Number,
+    repeat: Number,
+    delay: Number,
+    cancel: Boolean
+};
+
 const actionMap = new Map();
 
 robot.setKeyboardDelay(time);
