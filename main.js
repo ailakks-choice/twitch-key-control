@@ -2,6 +2,8 @@ const prompt = require('prompt-sync')();
 const tmi = require('tmi.js');
 const robot = require("robotjs");
 
+const minAmount = 10;
+
 const Language = {
     CHANNEL_NAME_PROMPT: 'Introduce el nombre del canal'
 };
@@ -11,10 +13,18 @@ const client = new tmi.Client({
     channels: [ channelName ]
 });
 
+const actionMap = new Map();
+
 client.connect();
 client.on('message', (channel, tags, message, self) => {
-    console.log(`Key ${getByCommand(message).key} pressed`)
-    robot.keyTap(getByCommand(message).key);
+    const key = getByCommand(message);
+    console.log(`Key ${key.key} pressed`)
+
+    actionMap.set(key, (actionMap.get(key) ?? 0) + 1);
+
+    if (actionMap.get(key) > minAmount) {
+        robot.keyTap(key.key);
+    }
 });
 
 const Keys = {
