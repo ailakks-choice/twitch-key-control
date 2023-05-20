@@ -3,6 +3,7 @@ const tmi = require('tmi.js');
 const robot = require("robotjs");
 
 const minAmount = 10;
+const time = 5 * 1000;
 
 const Language = {
     CHANNEL_NAME_PROMPT: 'Introduce el nombre del canal'
@@ -15,12 +16,16 @@ const client = new tmi.Client({
 
 const actionMap = new Map();
 
-client.connect();
-client.on('message', (channel, tags, message, self) => {
+client.connect().then(() => console.log("Connected!"));
+client?.on('message', (channel, tags, message) => {
     const key = getByCommand(message);
-    console.log(`Key ${key.key} pressed`)
 
     actionMap.set(key, (actionMap.get(key) ?? 0) + 1);
+    console.log(`Key ${key.key} pressed ${actionMap.get(key)} time(s)`);
+
+    setTimeout(() => {
+        actionMap.delete(key);
+    }, time);
 
     if (actionMap.get(key) > minAmount) {
         robot.keyTap(key.key);
