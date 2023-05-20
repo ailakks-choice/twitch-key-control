@@ -41,7 +41,7 @@ jobs:
 
       - name: Determine version
         id: determine_version
-        run: echo "VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
+        run: echo ::set-output name=GIT_VERSION::$(git describe --tags --always)
 
       - name: Create Release
         id: create_release
@@ -49,9 +49,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.determine_version.outputs.VERSION }}
-          release_name: Release ${{ steps.determine_version.outputs.VERSION }}
+          tag_name: $GIT_VERSION
+          release_name: Release $GIT_VERSION
           body: |
-            Release ${{ steps.determine_version.outputs.VERSION }}.
+            Release $GIT_VERSION.
           draft: false
           prerelease: false
