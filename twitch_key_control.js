@@ -70,12 +70,12 @@ client?.on('message', (channel, tags, message) => {
             if (action.mouse) {
                 if (action.time) {
                     action.mouse.forEach(action => {
-                        robot.mouseClick(action);
+                        robot.mouseToggle("up", action);
                     })
 
                     setTimeout(() => {
                         action.mouse.forEach(action => {
-                            robot.mouseToggle(action);
+                            robot.mouseToggle("down", action);
                         })
                     }, action.time);
 
@@ -83,6 +83,7 @@ client?.on('message', (channel, tags, message) => {
                 }
 
                 action.mouse.forEach(action => {
+                    console.log(action)
                     robot.mouseClick(action);
                 })
             }

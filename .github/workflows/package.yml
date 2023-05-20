@@ -34,7 +34,7 @@ jobs:
         run: npm install -g pkg
 
       - name: Build
-        run: pkg twitch_key_control.js --out-path build
+        run: npm run build
 
       - name: Archive build
         uses: actions/upload-artifact@v2
