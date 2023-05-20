@@ -43,7 +43,7 @@ client?.on('message', (channel, tags, message) => {
 
     if (actionMap.get(action) > minAmount) {
         const amount = actionMap.get(action);
-        console.log(amount > 1 ? config.language.ACTION_PERFORM_PLURAL : config.language.ACTION_PERFORM_SINGULAR
+        console.log((amount > 1 ? config.language.ACTION_PERFORM_PLURAL : config.language.ACTION_PERFORM_SINGULAR)
             .replace("{command}", action.command).replace("{amount}", amount));
 
         repeatAction(() => {
