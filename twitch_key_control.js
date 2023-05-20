@@ -6,6 +6,7 @@ const configManager = require("./config");
 const config = configManager.getConfig();
 
 const minAmount = config.settings.minimum_amount;
+const time = config.settings.time;
 const delay = config.settings.delay;
 
 const channelName = config.settings.channel ?? prompt(config.language.CHANNEL_NAME_PROMPT);
@@ -38,7 +39,7 @@ client?.on('message', (channel, tags, message) => {
 
     setTimeout(() => {
         actionMap.delete(action);
-    }, delay);
+    }, time);
 
     if (actionMap.get(action) > minAmount) {
         const amount = actionMap.get(action);
