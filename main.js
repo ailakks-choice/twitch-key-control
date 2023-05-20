@@ -1,7 +1,9 @@
 const prompt = require('prompt-sync')();
 const tmi = require('tmi.js');
 const robot = require("robotjs");
-const config = require('./config.json');
+const configManager = require("./config");
+
+const config = configManager.getConfig();
 
 const minAmount = config.settings.minimum_amount;
 const delay = config.settings.delay;
