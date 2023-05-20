@@ -44,7 +44,7 @@ jobs:
 
       - name: Determine version
         id: determine_version
-        run: echo name=GIT_VERSION::$(git describe --tags --always)
+        run: echo "::set-output name=GIT_VERSION::$(git describe --tags --always)"
 
       - name: Create Release
         id: create_release
@@ -52,9 +52,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: $GIT_VERSION
-          release_name: Release $GIT_VERSION
+          tag_name: ${{ steps.determine_version.outputs.GIT_VERSION }}
+          release_name: Release ${{ steps.determine_version.outputs.GIT_VERSION }}
           body: |
-            Release $GIT_VERSION.
+            Release ${{ steps.determine_version.outputs.GIT_VERSION }}.
           draft: false
           prerelease: false
+
+      - name: Upload Artifact to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/twitch_key_control-linux
+          asset_name: twitch_key_control-linux
+          asset_content_type: application/octet-stream
+
+      - name: Upload Artifact to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/twitch_key_control-macos
+          asset_name: twitch_key_control-macos
+          asset_content_type: application/octet-stream
+
+      - name: Upload Artifact to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: twitch_key_control-win.exe
+          asset_name: twitch_key_control-win.exe
+          asset_content_type: application/octet-stream
