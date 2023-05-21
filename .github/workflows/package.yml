@@ -52,7 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.determine_version.outputs.GIT_VERSION }}
+          tag_name: build
           release_name: Release ${{ steps.determine_version.outputs.GIT_VERSION }}
           body: |
             Release ${{ steps.determine_version.outputs.GIT_VERSION }}.
