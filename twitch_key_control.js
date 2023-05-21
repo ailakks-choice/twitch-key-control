@@ -27,7 +27,7 @@ const actionMap = new Map();
 
 robot.setKeyboardDelay(delay);
 
-client.connect().then(() => console.log(config.language.CHAT_STATUS_CONNECTED));
+client.connect().then(() => console.log(config.language.CHAT_STATUS_CONNECTED.replace("{channel}", channelName)));
 client?.on('message', (channel, tags, message) => {
     const action = getByCommand(message);
 
@@ -41,7 +41,7 @@ client?.on('message', (channel, tags, message) => {
         actionMap.delete(action);
     }, time);
 
-    if (actionMap.get(action) > minAmount) {
+    if (actionMap.get(action) >= minAmount) {
         const amount = actionMap.get(action);
         console.log((amount > 1 ? config.language.ACTION_PERFORM_PLURAL : config.language.ACTION_PERFORM_SINGULAR)
             .replace("{command}", action.command).replace("{amount}", amount));
